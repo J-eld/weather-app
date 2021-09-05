@@ -36,7 +36,7 @@ function App() {
       lat = pos.coords.latitude;
       
 
-      axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=59388f8beea76e951bbadf379c246a23&units=${units ? 'metric' : 'imperial'}`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=59388f8beea76e951bbadf379c246a23&units=${units ? 'metric' : 'imperial'}`)
       .then((res) => {
         setWeatherData(res.data)
         setDescription(res.data.weather[0].description)
@@ -58,7 +58,7 @@ function App() {
         <div className="temperature">
           {weatherData ? weatherData && Math.round(weatherData.main.temp) + '\xB0' + (units ? 'C' : 'F') : 'q'}
         </div>
-        <img src={`http://openweathermap.org/img/wn/${logo}@2x.png`} />
+        <img src={`https://openweathermap.org/img/wn/${logo}@2x.png`} />
         <div className="weather-description">
           {description.charAt(0).toUpperCase() + description.slice(1)}
         </div>
