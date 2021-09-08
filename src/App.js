@@ -12,41 +12,37 @@ function App() {
   const [logo, setLogo] = useState('');
   const [units, setUnits] = useState(true);
   const [noLocation, setNoLocation] = useState(false);
-
-  let lon = ''
-  let lat = ''
+  const [lat, setLat] = useState('')
+  const [lon, setLon] = useState('')
 
   function changeUnits() {
     setWeatherData('')
     setUnits(!units)
   }
 
-  navigator.permissions.query({ name: 'geolocation' })
-    .then(res => {
-      if (res.state === 'granted') {
-        setNoLocation(true)
-      } else {
-        setNoLocation(false)
-      }
-    })
+  const getData = async () => {
+    const res = await axios.get('https:/geolocation-db.com/json/')
+    setLat(res.data.latitude)
+    setLon(res.data.longitude)
+  }
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      lon = pos.coords.longitude;
-      lat = pos.coords.latitude;
-      
+    getData()
+  }, [])
 
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=59388f8beea76e951bbadf379c246a23&units=${units ? 'metric' : 'imperial'}`)
+  useEffect(() => {
+    if (lat && lon) {
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}&units=${units ? 'metric' : 'imperial'}`)
       .then((res) => {
         setWeatherData(res.data)
         setDescription(res.data.weather[0].description)
         setLogo(res.data.weather[0].icon)
       })
       .catch((err) => console.log(err))
-    })
-  }, [units])
+    }
+  }, [lat, lon, units])
 
-  if (noLocation) return (
+  if (lat && lon) return (
     <div className="App">
       <div className={clsx({['hidden']: !weatherData})}>
         <div className="city-name">
@@ -71,7 +67,7 @@ function App() {
     </div>
   );
 
-  return (<div className="App" >Please Enable Location Permissions</div>)
+  return (<div className="App" ></div>)
 }
 
 export default App;

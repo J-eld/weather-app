@@ -91,16 +91,16 @@ input:checked + .slider:before {
   font-weight: normal;
   font-size: 1.1em;
   position: relative;
-  left: 6px;
-  top: 4px;
+  left: 10%;
+  top: 15%;
 }
 
 .FahrenheitText {
   font-weight: normal;
   font-size: 1.1em;
   position: relative;
-  left: 38px;
-  top: 4px;
+  left: 60%;
+  top: 15%;
 }
 
 .slider.round:before {
