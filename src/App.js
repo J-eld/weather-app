@@ -21,7 +21,7 @@ function App() {
   }
 
   const getData = async () => {
-    const res = await axios.get('https:/geolocation-db.com/json/')
+    const res = await axios.get('http://geolocation-db.com/json/')
     setLat(res.data.latitude)
     setLon(res.data.longitude)
   }
