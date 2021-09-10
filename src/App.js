@@ -1,9 +1,14 @@
-import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react'
-import LoadingIcon from './assets/loadingIcon.svg'
 import clsx from 'clsx'
+import LocationTitle from './components/LocationTitle'
+import DateTime from './components/DateTime'
+import Temperature from './components/Temperature'
+import WeatherIcon from './components/WeatherIcon'
+import WeatherDescription from './components/WeatherDescription'
+import UnitSwitcher from './components/UnitSwitcher'
+import LocationSearch from './components/LocationSearch'
 
 function App() {
 
@@ -11,7 +16,6 @@ function App() {
   const [description, setDescription] = useState('');
   const [logo, setLogo] = useState('');
   const [units, setUnits] = useState(true);
-  const [noLocation, setNoLocation] = useState(false);
   const [lat, setLat] = useState('')
   const [lon, setLon] = useState('')
 
@@ -30,6 +34,11 @@ function App() {
     getData()
   }, [])
 
+  const setSearchLocation = (lat, lon) => {
+    setLat(lat)
+    setLon(lon)
+  }
+
   useEffect(() => {
     if (lat && lon) {
       axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${process.env.REACT_APP_API_KEY}&units=${units ? 'metric' : 'imperial'}`)
@@ -42,32 +51,24 @@ function App() {
     }
   }, [lat, lon, units])
 
-  if (lat && lon) return (
+  return (
     <div className="App">
-      <div className={clsx({['hidden']: !weatherData})}>
-        <div className="city-name">
-          {weatherData ? weatherData.name : 'q'}
-        </div>
-        <div className="dateTime">
-          {new Date().toDateString() + '\xa0\xa0' + new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})}
-        </div>
-        <div className="temperature">
-          {weatherData ? weatherData && Math.round(weatherData.main.temp) + '\xB0' + (units ? 'C' : 'F') : 'q'}
-        </div>
-        <img src={`https://openweathermap.org/img/wn/${logo}@2x.png`} />
-        <div className="weather-description">
-          {description.charAt(0).toUpperCase() + description.slice(1)}
-        </div>
-      </div>
-      <label className="switch">
-        <input value={units} checked={units} onChange={changeUnits} type="checkbox" />
-        <span className="slider round"><span className={clsx({['CelsiusText']: units, ['FahrenheitText']: !units})}>{units ? '\xB0C' : '\xB0F'}</span></span>
-      </label>
-      <div className={clsx({['loading']: !weatherData})}></div>
+      <LocationSearch setSearchLocation={setSearchLocation} />
+      {(lat && lon) && (
+        <>
+          <div className={clsx({'hidden': !weatherData})}> {/* only show this section if weatherData has loaded */}
+            <LocationTitle weatherData={weatherData} />
+            <DateTime />
+            <Temperature weatherData={weatherData} units={units} />
+            <WeatherIcon logo={logo} />
+            <WeatherDescription description={description} />
+          </div>
+          <UnitSwitcher units={units} changeUnits={changeUnits} />
+          <div className={clsx({'loading': !weatherData})}></div>
+        </>
+      )}
     </div>
   );
-
-  return (<div className="App" ></div>)
 }
 
 export default App;

@@ -119,3 +119,38 @@ input:checked + .slider:before {
   height: 40px;
   width: 100%;
 }
+
+.search {
+  background: transparent;
+  border: 2px #fff solid;
+  padding: 0.5rem;
+  color: #fff;
+  font-size: 1.1em;
+}
+
+.dropdownDiv {
+
+}
+
+.dropdownRoot {
+  margin-bottom: 2rem;
+}
+
+.dropdownDescription {
+}
+
+.dropdownStyles {
+  background: #ffffff;
+  color: #000;
+  cursor: pointer;
+}
+
+.activeDropdown {
+  background: #eee;
+  color: #000;
+  cursor: pointer;
+}
+
+.search::placeholder {
+  color: #fff;
+}
