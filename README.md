@@ -11,3 +11,8 @@ A simple weather app that utilises the OpenWeatherMap API to bring you a summary
 
 ### Try it out here
 https://weather-app-five-indol.vercel.app/
+
+## Getting Started
+
+- run npm install to install dependencies
+- npm run dev to start development server
